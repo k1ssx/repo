@@ -1,0 +1,3 @@
+[submodule "repo-main"]
+	path = repo-main
+	url = https://github.com/kiss-community/repo-main

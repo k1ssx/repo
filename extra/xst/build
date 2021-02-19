@@ -1,0 +1,6 @@
+#!/bin/sh -e
+
+patch -p1 < xst-ligatures-0.8.4.patch
+
+make 
+make DESTDIR="$1" PREFIX="/usr" install

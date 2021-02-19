@@ -1,0 +1,3 @@
+https://github.com/davatorium/rofi/releases/download/1.6.1/rofi-1.6.1.tar.gz
+patches/rofi-no-bash.patch
+patches/rofi-no-libsn.patch
