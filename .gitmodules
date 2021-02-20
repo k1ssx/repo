@@ -1,3 +1,6 @@
 [submodule "repo-main"]
 	path = repo-main
 	url = https://github.com/kiss-community/repo-main
+[submodule "repo-community"]
+	path = repo-community
+	url = https://github.com/kiss-community/repo-community
