@@ -1,0 +1,14 @@
+#!/bin/sh -e
+
+
+./configure \
+	--bindir=/usr/bin \
+	--disable-shared \
+	--with-lib=/usr/lib/skalibs \
+	--with-lib=/usr/lib/execline \
+	--with-lib=/usr/lib/oblibs \
+	--with-ns-rule=/usr/lib/66/script/ns
+
+make
+
+make DESTDIR="$1" install install-ns-rule

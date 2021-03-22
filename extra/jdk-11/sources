@@ -1,0 +1,7 @@
+http://hg.openjdk.java.net/jdk-updates/jdk11u/archive/jdk-11.0.9-ga.tar.bz2 openjdk-11
+https://cdn.azul.com/zulu/bin/zulu11.37.17-ca-jdk11.0.6-linux_musl_x64.tar.gz bootjdk-11
+patches/aarch64.patch
+patches/build.patch
+patches/config_sub_musl.patch
+patches/fix-bootjdk-check.patch
+patches/ppc64le.patch

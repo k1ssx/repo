@@ -1,0 +1,71 @@
+#!/bin/sh -e
+
+export JDK_HOME=$(pwd)/bootjdk-11
+
+cd openjdk-11
+
+for patch in ../*.patch; do
+	patch -p1 < $patch
+done
+
+_jvmdir=/usr/lib/jvm/java-11-openjdk
+NUM_PROC_OPT=''
+MAKEFLAG_J=$(echo ${MAKEFLAGS} | sed -En 's/.*-j([0-9]+).*/\1/p')
+if [ -n "${MAKEFLAG_J}" ]; then
+	echo "Removing '-j${MAKEFLAG_J}' from MAKEFLAGS to prevent build failure."
+	export MAKEFLAGS=${MAKEFLAGS/-j${MAKEFLAG_J}/}
+	NUM_PROC_OPT="--with-num-cores=${MAKEFLAG_J}"
+fi
+
+_CFLAGS="${CFLAGS//-O2/-O3} ${CPPFLAGS} -fcommon"
+_CXXFLAGS="${CXXFLAGS//-O2/-O3} ${CPPFLAGS} -fcommon"
+_LDFLAGS=${LDFLAGS}
+
+unset CFLAGS
+unset CXXFLAGS
+unset LDFLAGS
+
+chmod +x configure
+
+rm -rf src/jdk.hotspot.agent
+
+./configure \
+    --disable-ccache \
+    --enable-full-docs=no \
+    --with-boot-jdk="${JDK_HOME}" \
+    --with-extra-cflags="${CFLAGS}" \
+    --with-extra-cxxflags="${CXXFLAGS}" \
+    --with-extra-ldflags="${LDFLAGS}" \
+    --with-giflib=system \
+    --with-lcms=system \
+    --with-libjpeg=system \
+    --with-libpng=system \
+    --with-native-debug-symbols=none \
+    --with-vendor-name="KISS" \
+    --with-vendor-url="https://github.com/k1ssx" \
+    --with-vendor-bug-url="https://github.com/k1ssx" \
+    --with-vendor-vm-bug-url="https://bugs.openjdk.java.net" \
+    --with-vendor-version-string="11.0.9" \
+    --with-version-pre="" \
+    --with-version-string="11.0.9" \
+    --with-version-build="11" \
+    --with-zlib=system \
+    --enable-dtrace=no \
+    --enable-headless-only=no \
+    --disable-precompiled-headers
+
+make CFLAGS_WARNINGS_ARE_ERRORS= images
+
+find "../openjdk-11/build/linux-x86_64-normal-server-release/images" -iname '*.so' -exec chmod +x {} \;
+
+cd build/linux-x86_64-normal-server-release/images/jdk
+
+install -dm 755 "$1/$_jvmdir"
+cp -a bin demo include jmods lib release "$1/$_jvmdir"
+
+install -dm 755 "$1/etc"
+cp -r conf "$1/etc/java-11-openjdk"
+ln -s /etc/java-11-openjdk "$1/$_jvmdir/conf"
+
+
+

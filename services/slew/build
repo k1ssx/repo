@@ -1,0 +1,9 @@
+#!/bin/sh -e
+
+mkdir -p "$1/etc/slew/"
+cp -r base $1/etc/slew
+cp -r init/ $1/etc/slew/
+cp -r lib $1/etc/slew/
+cp -r run/ $1/etc/slew/
+cp -r pkg $1/etc/slew/
+

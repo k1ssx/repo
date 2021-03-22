@@ -1,0 +1,23 @@
+#!/bin/sh -e
+
+./configure \
+	--bindir=/usr/bin \
+	--shebangdir=/usr/bin \
+	--disable-shared \
+	--with-system-service=/usr/lib/66/service \
+	--with-system-module=/usr/lib/66/module \
+	--with-system-script=/usr/lib/66/script \
+	--with-s6-log-timestamp=iso \
+	--with-s6-log-user=root \
+	--with-lib=/usr/lib/skalibs \
+	--with-lib=/usr/lib/s6 \
+	--with-lib=/usr/lib/s6-rc \
+	--with-lib=/usr/lib/oblibs
+
+make
+make DESTDIR="$1" install
+for i in halt init poweroff reboot shutdown; do
+	mv "$1/etc/66/$i" "$1/usr/bin"
+done
+
+
