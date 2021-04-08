@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+mkdir -pv build
+cd build
+
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DURIPARSER_BUILD_DOCS=Off -DURIPARSER_BUILD_TESTS=Off ..
+make
+make DESTDIR="$1" install

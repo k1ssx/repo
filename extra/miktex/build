@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+mkdir -pv build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/usr -DWITH_UI_QT=OFF ..
+make
+
+make DESTDIR="$1" install

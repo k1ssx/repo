@@ -1,0 +1,7 @@
+#!/bin/sh -e
+
+make
+
+mkdir -pv $1/usr/bin
+
+install -Dm755 keychain $1/usr/bin/keychain

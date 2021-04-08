@@ -1,0 +1,22 @@
+#!/bin/sh -e
+
+mkdir -p tmp
+export DESTDIR="$PWD/tmp"
+meson \
+	--prefix=/usr \
+	-Dglib=enabled \
+	-Dicu=disabled \
+	-Dbenchmark=disabled \
+	-Dcairo=disabled \
+	-Dgraphite=enabled \
+	-Ddocs=disabled \
+	-Dtests=disabled \
+	. output
+
+ninja -C output
+ninja -C output install
+
+#ls -la tmp/usr/lib
+#ls -la tmp/usr/lib/pkgconfig
+#ls -la tmp/usr/include/harfbuzz
+install -Dt "$1/usr/include/harfbuzz" tmp/usr/include/harfbuzz/hb-graphit2.h

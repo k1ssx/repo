@@ -1,0 +1,11 @@
+#!/bin/sh -e
+
+export CGO_CPPFLAGS="${CPPFLAGS}"
+export CGO_CFLAGS="${CFLAGS}"
+export CGO_CXXFLAGS="${CXXFLAGS}"
+export CGO_LDFLAGS="${LDFLAGS}"
+export GOFLAGS="-buildmode=pie -trimpath -mod=readonly -modcacherw"
+go build -tags extended 
+
+
+install -Dm755 hugo "$1/usr/bin/hugo"
